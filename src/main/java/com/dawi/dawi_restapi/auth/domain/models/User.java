@@ -41,7 +41,7 @@ public class User implements UserDetails {
     private Boolean activo = true;
 
     @Column(name = "fecha_creacion")
-    private LocalDateTime fechaCreacion;
+    private LocalDateTime fechaCreacion = LocalDateTime.now();
 
 
     @Override

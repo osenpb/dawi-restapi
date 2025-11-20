@@ -47,7 +47,7 @@ public class AuthServiceImpl implements AuthService, UserDetailsService {
             String token = tokenService.generateToken(authentication);
 
             return Map.of(
-                    "access-token", token
+                    "access-token", token // aqui por si quieres agregar un refresh token, pero sino puede enviar directo el token sin un map
             );
 
         } catch (BadCredentialsException e) {
@@ -84,6 +84,8 @@ public class AuthServiceImpl implements AuthService, UserDetailsService {
         createUser.setEmail(createUserDto.email());
         createUser.setPassword(passwordEncoder.encode(createUserDto.password()));
         createUser.setRole(roleClient);
+        createUser.setTelefono(createUserDto.telefono());
+
         final User user = userRepository.save(createUser);
         log.info("[USER] : User successfully created with id {}", user.getId());
     }

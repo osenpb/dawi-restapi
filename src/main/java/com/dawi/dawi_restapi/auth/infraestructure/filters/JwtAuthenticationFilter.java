@@ -13,6 +13,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -68,6 +70,19 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return Optional.of(bearerToken.substring(7)); // quitar "Bearer "
         }
         return Optional.empty();
+    }
+
+    private static final List<String> PUBLIC_PATHS = Arrays.asList(
+            "/api/v1/auth/login",
+            "/api/v1/auth/register",
+            "/api/v1/auth/refresh-token",
+            "/error"
+    );
+
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        String path = request.getRequestURI();
+        return PUBLIC_PATHS.stream().anyMatch(path::startsWith);
     }
 
 }

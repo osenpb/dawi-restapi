@@ -1,6 +1,7 @@
 package com.dawi.dawi_restapi.controllers.admin;
 
 import com.dawi.dawi_restapi.core.habitacion.services.HabitacionService;
+import com.dawi.dawi_restapi.core.hotel.dtos.HotelRequest;
 import com.dawi.dawi_restapi.core.hotel.models.Hotel;
 import com.dawi.dawi_restapi.core.hotel.services.DepartamentoService;
 import com.dawi.dawi_restapi.core.hotel.services.HotelService;
@@ -39,15 +40,19 @@ public class AdminHotelController {
     }
 
     @PostMapping
-    public ResponseEntity<?> crear(@RequestBody Hotel hotel) {
+    public ResponseEntity<?> crear(@RequestBody HotelRequest hotel) {
         return ResponseEntity.ok(hotelService.guardar(hotel));
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<?> actualizar(@PathVariable Long id, @RequestBody Hotel hotel) {
-        hotel.setId(id);
-        return ResponseEntity.ok(hotelService.guardar(hotel));
-    }
+
+    // REVISAR METODO, PROBLEMAS DE LOGICA
+//    @PutMapping("/{id}")
+//    public ResponseEntity<?> actualizar(@PathVariable Long id, @RequestBody HotelRequest hotelRequest) {
+//
+//        Hotel hotel = new Hotel();
+//        hotel.setId(id);
+//        return ResponseEntity.ok(hotelService.guardar(hotel));
+//    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> eliminar(@PathVariable Long id) {
@@ -59,6 +64,5 @@ public class AdminHotelController {
     public ResponseEntity<?> hotelesPorDepartamento(@PathVariable Long id) {
         return ResponseEntity.ok(hotelService.listarPorDepartamentoId(id));
     }
-
 
 }

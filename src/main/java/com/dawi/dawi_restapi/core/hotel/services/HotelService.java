@@ -1,11 +1,13 @@
 package com.dawi.dawi_restapi.core.hotel.services;
 
 
+import com.dawi.dawi_restapi.core.hotel.dtos.HotelDTO;
 import com.dawi.dawi_restapi.core.hotel.dtos.HotelRequest;
 import com.dawi.dawi_restapi.core.hotel.models.Departamento;
 import com.dawi.dawi_restapi.core.hotel.models.Hotel;
 import com.dawi.dawi_restapi.core.hotel.repositories.DepartamentoRepository;
 import com.dawi.dawi_restapi.core.hotel.repositories.HotelRepository;
+import com.dawi.dawi_restapi.general.helpers.HotelMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -54,17 +56,25 @@ public class HotelService {
         return hotelRepository.save(hotel);
     }
 
+    public HotelDTO buscarPorId(Long id) {
 
+        Hotel hotel = hotelRepository.findById(id).orElseThrow(() -> new RuntimeException("Hotel no encontrado"));
+        HotelDTO hotelDTO = HotelMapper.toDTO(hotel);
 
-    public Optional<Hotel> buscarPorId(Long id) {
-        return hotelRepository.findById(id);
+        return hotelDTO;
+
     }
 
     public void eliminar(Long id) {
         hotelRepository.deleteById(id);
     }
 
-    public List<Hotel> listarTodosLosDepartamentos() {
-        return hotelRepository.findAll();
+    public List<HotelDTO> listarHoteles() {
+
+        List<Hotel> hoteles = hotelRepository.findAll();
+
+        List<HotelDTO> hotelesDTO = hoteles.stream().map(HotelMapper::toDTO).toList();
+
+        return hotelesDTO;
     }
 }

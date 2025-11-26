@@ -4,15 +4,13 @@ package com.dawi.dawi_restapi.core.hotel.models;
 import com.dawi.dawi_restapi.core.habitacion.models.Habitacion;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
 
 @Entity
+@Builder
 @Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -31,7 +29,6 @@ public class Hotel {
     private Departamento departamento;
 
     @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL,orphanRemoval = true)
-    @JsonIgnore
     private List<Habitacion> habitaciones;
 
     public double getPrecioMinimo() {

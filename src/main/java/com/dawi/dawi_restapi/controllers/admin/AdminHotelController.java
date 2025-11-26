@@ -1,6 +1,7 @@
 package com.dawi.dawi_restapi.controllers.admin;
 
 import com.dawi.dawi_restapi.core.habitacion.services.HabitacionService;
+import com.dawi.dawi_restapi.core.hotel.dtos.HotelDTO;
 import com.dawi.dawi_restapi.core.hotel.dtos.HotelRequest;
 import com.dawi.dawi_restapi.core.hotel.models.Hotel;
 import com.dawi.dawi_restapi.core.hotel.services.DepartamentoService;
@@ -21,8 +22,8 @@ public class AdminHotelController {
     private final HabitacionService habitacionService;
 
     @GetMapping
-    public ResponseEntity<List<Hotel>> obtenerTodosLosHoteles() {
-        List<Hotel> hoteles = hotelService.listarTodosLosDepartamentos();
+    public ResponseEntity<List<HotelDTO>> obtenerTodosLosHoteles() {
+        List<HotelDTO> hoteles = hotelService.listarHoteles();
         return ResponseEntity.ok(hoteles);
 
     }
@@ -33,10 +34,9 @@ public class AdminHotelController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> obtener(@PathVariable Long id) {
-        return hotelService.buscarPorId(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<HotelDTO> obtener(@PathVariable Long id) {
+
+        return ResponseEntity.ok( hotelService.buscarPorId(id));
     }
 
     @PostMapping
@@ -46,13 +46,11 @@ public class AdminHotelController {
 
 
     // REVISAR METODO, PROBLEMAS DE LOGICA
-//    @PutMapping("/{id}")
-//    public ResponseEntity<?> actualizar(@PathVariable Long id, @RequestBody HotelRequest hotelRequest) {
-//
-//        Hotel hotel = new Hotel();
-//        hotel.setId(id);
-//        return ResponseEntity.ok(hotelService.guardar(hotel));
-//    }
+    @PutMapping("/{id}")
+    public ResponseEntity<?> actualizar(@PathVariable Long id, @RequestBody HotelRequest hotelRequest) {
+
+        return ResponseEntity.ok(hotelService.guardar(hotelRequest));
+    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> eliminar(@PathVariable Long id) {

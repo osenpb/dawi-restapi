@@ -1,11 +1,15 @@
 package com.dawi.dawi_restapi.core.hotel.services;
 
-import com.dawi.dawi_restapi.core.hotel.dtos.HotelDTO;
+import com.dawi.dawi_restapi.core.departamento.service.DepartamentoService;
+import com.dawi.dawi_restapi.core.habitacion.models.Habitacion;
+import com.dawi.dawi_restapi.core.hotel.dtos.HotelResponse;
 import com.dawi.dawi_restapi.core.hotel.dtos.HotelRequest;
-import com.dawi.dawi_restapi.core.hotel.models.Departamento;
-import com.dawi.dawi_restapi.core.hotel.models.Hotel;
+import com.dawi.dawi_restapi.core.departamento.model.Departamento;
+import com.dawi.dawi_restapi.core.hotel.model.Hotel;
 import com.dawi.dawi_restapi.core.hotel.repositories.HotelRepository;
-import com.dawi.dawi_restapi.general.helpers.HotelMapper;
+import com.dawi.dawi_restapi.core.tipoHabitacion.model.TipoHabitacion;
+import com.dawi.dawi_restapi.core.tipoHabitacion.service.TipoHabitacionService;
+import com.dawi.dawi_restapi.helpers.mappers.HotelMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +22,7 @@ public class HotelService {
 
     private final HotelRepository hotelRepository;
     private final DepartamentoService departamentoService;
+    private final TipoHabitacionService tipoHabitacionService;
 
     public List<Hotel> listarPorDepartamentoId(Long departamentoId) {
         return hotelRepository.findByDepartamentoId(departamentoId);
@@ -37,7 +42,7 @@ public class HotelService {
         return hotelRepository.save(hotel);
     }
 
-    public Hotel actualizar(Long id, HotelRequest hotelRequest) {
+    public boolean actualizar(Long id, HotelRequest hotelRequest) {
         Hotel hotel = hotelRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Hotel no encontrado"));
 
@@ -49,13 +54,35 @@ public class HotelService {
         hotel.setDireccion(hotelRequest.direccion());
         hotel.setDepartamento(departamento);
 
-        return hotelRepository.save(hotel);
+        // Limpiar habitaciones existentes
+        hotel.getHabitaciones().clear();
+
+        // Crear habitaciones según el request
+        List<Habitacion> nuevasHabitaciones = hotelRequest.habitaciones().stream().map(habReq -> {
+            Habitacion hab = new Habitacion();
+            hab.setHotel(hotel);
+            hab.setNumero(habReq.numero());
+            hab.setEstado(habReq.estado());
+            hab.setPrecio(habReq.precio());
+
+            TipoHabitacion tipo = tipoHabitacionService
+                    .buscarPorId(habReq.tipoHabitacionId());
+            hab.setTipoHabitacion(tipo);
+
+            return hab;
+        }).toList();
+
+        hotel.getHabitaciones().addAll(nuevasHabitaciones);
+
+        return true;
     }
+
+
 
     /**
      * Buscar hotel por ID - retorna HotelDTO
      */
-    public HotelDTO buscarPorId(Long id) {
+    public HotelResponse buscarPorId(Long id) {
         Hotel hotel = hotelRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Hotel no encontrado"));
         return HotelMapper.toDTO(hotel);
@@ -72,7 +99,7 @@ public class HotelService {
         hotelRepository.deleteById(id);
     }
 
-    public List<HotelDTO> listarHoteles() {
+    public List<HotelResponse> listarHoteles() {
         List<Hotel> hoteles = hotelRepository.findAll();
         return hoteles.stream().map(HotelMapper::toDTO).toList();
     }

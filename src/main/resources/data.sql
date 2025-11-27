@@ -14,6 +14,7 @@
 
 
 -- DATOS PARA LAS PRUEBAS
+
 insert into departamento (id,nombre,detalle)
 values (1,'Lima','La capital del peru'),
 (2,'Cuzco','La ciuad del sol'),

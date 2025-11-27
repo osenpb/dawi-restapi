@@ -1,6 +1,6 @@
 package com.dawi.dawi_restapi.core.hotel.repositories;
 
-import com.dawi.dawi_restapi.core.hotel.models.Hotel;
+import com.dawi.dawi_restapi.core.hotel.model.Hotel;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

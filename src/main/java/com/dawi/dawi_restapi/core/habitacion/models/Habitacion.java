@@ -1,8 +1,9 @@
 package com.dawi.dawi_restapi.core.habitacion.models;
 
 
-import com.dawi.dawi_restapi.core.hotel.models.Hotel;
+import com.dawi.dawi_restapi.core.hotel.model.Hotel;
 import com.dawi.dawi_restapi.core.reserva.models.DetalleReserva;
+import com.dawi.dawi_restapi.core.tipoHabitacion.model.TipoHabitacion;
 import jakarta.persistence.*;
 import lombok.*;
 

@@ -5,7 +5,7 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/dawiapp?useSSL=false&serverTimezone=UTC
     username: root
-    password: cancer16
+    password: mysql
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   output:

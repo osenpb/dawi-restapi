@@ -3,7 +3,7 @@ package com.dawi.dawi_restapi.auth.application.services;
 import com.dawi.dawi_restapi.auth.domain.models.User;
 import com.dawi.dawi_restapi.auth.domain.repositories.UserRepository;
 import com.dawi.dawi_restapi.auth.domain.services.TokenService;
-import com.dawi.dawi_restapi.general.exceptions.TokenExpiredException;
+import com.dawi.dawi_restapi.helpers.exceptions.TokenExpiredException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;

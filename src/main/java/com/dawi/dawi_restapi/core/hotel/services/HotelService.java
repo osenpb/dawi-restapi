@@ -1,7 +1,9 @@
 package com.dawi.dawi_restapi.core.hotel.services;
 
 import com.dawi.dawi_restapi.core.departamento.service.DepartamentoService;
+import com.dawi.dawi_restapi.core.habitacion.dtos.HabitacionResponse;
 import com.dawi.dawi_restapi.core.habitacion.models.Habitacion;
+import com.dawi.dawi_restapi.core.habitacion.service.HabitacionService;
 import com.dawi.dawi_restapi.core.hotel.dtos.HotelResponse;
 import com.dawi.dawi_restapi.core.hotel.dtos.HotelRequest;
 import com.dawi.dawi_restapi.core.departamento.model.Departamento;
@@ -9,12 +11,14 @@ import com.dawi.dawi_restapi.core.hotel.model.Hotel;
 import com.dawi.dawi_restapi.core.hotel.repositories.HotelRepository;
 import com.dawi.dawi_restapi.core.tipoHabitacion.model.TipoHabitacion;
 import com.dawi.dawi_restapi.core.tipoHabitacion.service.TipoHabitacionService;
+import com.dawi.dawi_restapi.helpers.mappers.HabitacionMapper;
 import com.dawi.dawi_restapi.helpers.mappers.HotelMapper;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,6 +29,7 @@ public class HotelService {
     private final HotelRepository hotelRepository;
     private final DepartamentoService departamentoService;
     private final TipoHabitacionService tipoHabitacionService;
+    private final HabitacionService habitacionService;
 
     public List<Hotel> listarPorDepartamentoId(Long departamentoId) {
         return hotelRepository.findByDepartamentoId(departamentoId);
@@ -57,7 +62,6 @@ public class HotelService {
         hotel.setDireccion(hotelRequest.direccion());
         hotel.setDepartamento(departamento);
 
-        // Limpiar habitaciones existentes
         hotel.getHabitaciones().clear(); // esto esta x ver
 
         List<Habitacion> nuevasHabitaciones = hotelRequest.habitaciones().stream().map(habReq -> {
@@ -79,22 +83,10 @@ public class HotelService {
         return true;
     }
 
-
-
-    /**
-     * Buscar hotel por ID - retorna HotelDTO
-     */
     public HotelResponse buscarPorId(Long id) {
         Hotel hotel = hotelRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Hotel no encontrado"));
         return HotelMapper.toDTO(hotel);
-    }
-
-    /**
-     * Buscar hotel por ID - retorna entidad Hotel (para uso interno)
-     */
-    public Optional<Hotel> buscarEntidadPorId(Long id) {
-        return hotelRepository.findById(id);
     }
 
     public void eliminar(Long id) {
@@ -105,4 +97,19 @@ public class HotelService {
         List<Hotel> hoteles = hotelRepository.findAll();
         return hoteles.stream().map(HotelMapper::toDTO).toList();
     }
+
+
+    // esto podria ponerlo en ReservaService, pero x ahora lo dejo aqui
+    public List<HabitacionResponse> obtenerHabitacionesDisponibles(
+            Long hotelId, LocalDate fechaInicio, LocalDate fechaFin) {
+
+        HotelResponse hotelResponse = this.buscarPorId(hotelId);
+
+        return hotelResponse.habitaciones().stream()
+                .filter(h -> "DISPONIBLE".equals(h.estado()))
+                .filter(h -> habitacionService.estaDisponible(h.id(), fechaInicio, fechaFin))
+                .map(HabitacionMapper::toDTO)
+                .toList();
+    }
+
 }

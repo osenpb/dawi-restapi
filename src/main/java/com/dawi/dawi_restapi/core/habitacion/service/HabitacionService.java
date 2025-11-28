@@ -1,11 +1,16 @@
 package com.dawi.dawi_restapi.core.habitacion.service;
 
+import com.dawi.dawi_restapi.core.habitacion.dtos.HabitacionResponse;
 import com.dawi.dawi_restapi.core.habitacion.models.Habitacion;
 import com.dawi.dawi_restapi.core.habitacion.repository.HabitacionRepository;
+import com.dawi.dawi_restapi.core.hotel.dtos.HotelResponse;
+import com.dawi.dawi_restapi.core.hotel.services.HotelService;
+import com.dawi.dawi_restapi.helpers.mappers.HabitacionMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -13,6 +18,9 @@ import java.util.Optional;
 public class HabitacionService {
 
     private final HabitacionRepository habitacionRepository;
+
+
+
 
     public Optional<Habitacion> buscarPorId(Long id) {
         return habitacionRepository.findById(id);
@@ -27,12 +35,14 @@ public class HabitacionService {
         return habitacionRepository.contarDisponibles(hotelId, inicio, fin);
     }
 
-    public boolean estaDisponible(Habitacion habitacion, LocalDate inicio, LocalDate fin) {
-        Long idHabitacion = habitacion.getId();
+    public boolean estaDisponible(Long habitacionId, LocalDate inicio, LocalDate fin) {
 
         int conflictos = habitacionRepository
-                .contarReservasPorHabitacionYFechas(idHabitacion, inicio, fin);
+                .contarReservasPorHabitacionYFechas(habitacionId, inicio, fin);
 
         return conflictos == 0;
     }
+
+
+
 }

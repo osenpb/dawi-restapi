@@ -9,7 +9,7 @@ public class HabitacionMapper {
         throw new UnsupportedOperationException("Esta clase no debe ser instanciada");
     }
 
-    public static HabitacionResponse toDTO(Habitacion habitacion) {
+    public static HabitacionResponse toDTO(HabitacionResponse habitacion) {
         if (habitacion == null) {
             return null;
         }

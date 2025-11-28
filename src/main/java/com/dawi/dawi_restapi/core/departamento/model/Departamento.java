@@ -1,6 +1,5 @@
 package com.dawi.dawi_restapi.core.departamento.model;
 
-
 import com.dawi.dawi_restapi.core.hotel.model.Hotel;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -10,7 +9,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
-
 
 
 @Entity

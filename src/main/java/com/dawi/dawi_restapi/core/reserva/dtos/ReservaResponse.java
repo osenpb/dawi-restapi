@@ -3,7 +3,7 @@ package com.dawi.dawi_restapi.core.reserva.dtos;
 import java.time.LocalDate;
 import java.util.List;
 
-public record ReservaResponseDTO(
+public record ReservaResponse(
      Long id,
      LocalDate fechaInicio,
      LocalDate fechaFin,

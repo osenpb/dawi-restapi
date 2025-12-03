@@ -152,7 +152,47 @@ public class ReservaController {
             ));
         }
 
-        List<ReservaResponse> reservasResponse = reservas.stream().map(ReservaMapper::toDTO).toList();
+        // Construir respuesta simplificada sin referencias circulares
+        List<Map<String, Object>> reservasResponse = reservas.stream().map(reserva -> {
+            Map<String, Object> res = new java.util.HashMap<>();
+            res.put("id", reserva.getId());
+            res.put("fechaReserva", reserva.getFechaReserva().toString());
+            res.put("fechaInicio", reserva.getFechaInicio().toString());
+            res.put("fechaFin", reserva.getFechaFin().toString());
+            res.put("total", reserva.getTotal());
+            res.put("estado", reserva.getEstado());
+
+            // Hotel simplificado
+            res.put("hotel", Map.of(
+                    "id", reserva.getHotel().getId(),
+                    "nombre", reserva.getHotel().getNombre(),
+                    "direccion", reserva.getHotel().getDireccion() != null ? reserva.getHotel().getDireccion() : "",
+                    "departamento", Map.of(
+                            "id", reserva.getHotel().getDepartamento().getId(),
+                            "nombre", reserva.getHotel().getDepartamento().getNombre()
+                    )
+            ));
+
+            // Cliente simplificado
+            res.put("cliente", Map.of(
+                    "id", reserva.getCliente().getId(),
+                    "nombre", reserva.getCliente().getNombre(),
+                    "apellido", reserva.getCliente().getApellido() != null ? reserva.getCliente().getApellido() : "",
+                    "email", reserva.getCliente().getEmail() != null ? reserva.getCliente().getEmail() : "",
+                    "telefono", reserva.getCliente().getTelefono() != null ? reserva.getCliente().getTelefono() : "",
+                    "documento", reserva.getCliente().getDni()
+            ));
+
+            // Detalles
+            List<Map<String, Object>> detalles = reserva.getDetalles().stream().map(det -> Map.of(
+                    "id", (Object) det.getId(),
+                    "habitacionId", det.getHabitacion().getId(),
+                    "precioNoche", det.getPrecioNoche()
+            )).toList();
+            res.put("detalles", detalles);
+
+            return res;
+        }).toList();
 
         return ResponseEntity.ok(reservasResponse);
     }

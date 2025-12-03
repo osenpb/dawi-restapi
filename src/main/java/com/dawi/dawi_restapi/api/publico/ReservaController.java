@@ -70,8 +70,23 @@ public class ReservaController {
     @GetMapping("/hoteles/{id}")
     public ResponseEntity<?> infoHotel(@PathVariable Long id) {
         Hotel hotel = hotelService.buscarPorId(id);
+        HotelResponse hotelDTO = HotelMapper.toDTO(hotel);
 
-        return ResponseEntity.ok(HotelMapper.toDTO(hotel));
+        return ResponseEntity.ok(Map.of(
+                "hotel", Map.of(
+                        "id", hotel.getId(),
+                        "nombre", hotel.getNombre(),
+                        "direccion", hotel.getDireccion() != null ? hotel.getDireccion() : "",
+                        "precioMinimo", hotel.getPrecioMinimo(),
+                        "cantidadHabitaciones", hotel.cantidadHabitaciones()
+                ),
+                "departamento", Map.of(
+                        "id", hotel.getDepartamento().getId(),
+                        "nombre", hotel.getDepartamento().getNombre(),
+                        "detalle", hotel.getDepartamento().getDetalle() != null ? hotel.getDepartamento().getDetalle() : ""
+                ),
+                "habitaciones", hotelDTO.habitaciones() != null ? hotelDTO.habitaciones() : List.of()
+        ));
     }
 
     /**

@@ -110,13 +110,22 @@ public class ReservaService {
 
 
     private Cliente crearOCrearCliente(ClienteRequest dto) {
+        // Buscar cliente existente por DNI
+        Optional<Cliente> existente = clienteRepository.findByDni(dto.dni());
 
-        Cliente existente = clienteService.buscarPorDni(dto.dni());
-
-        if (existente != null) {
-            return existente;
+        if (existente.isPresent()) {
+            // Actualizar datos del cliente existente si es necesario
+            Cliente cliente = existente.get();
+            cliente.setNombre(dto.nombre());
+            cliente.setApellido(dto.apellido());
+            cliente.setEmail(dto.email());
+            if (dto.telefono() != null) {
+                cliente.setTelefono(dto.telefono());
+            }
+            return clienteRepository.save(cliente);
         }
 
+        // Crear nuevo cliente
         Cliente nuevo = ClienteMapper.toCliente(dto);
         return clienteRepository.save(nuevo);
     }
@@ -164,6 +173,3 @@ public class ReservaService {
         return habitaciones;
     }
 }
-
-
-

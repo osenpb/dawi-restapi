@@ -196,4 +196,74 @@ public class ReservaController {
 
         return ResponseEntity.ok(reservasResponse);
     }
+
+    /**
+     * Cancelar/Eliminar una reserva
+     */
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> cancelarReserva(@PathVariable Long id) {
+        Optional<Reserva> reservaOpt = reservaService.buscarPorId(id);
+
+        if (reservaOpt.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Map.of("message", "Reserva no encontrada"));
+        }
+
+        reservaService.eliminar(id);
+        return ResponseEntity.ok(Map.of("message", "Reserva cancelada exitosamente"));
+    }
+
+    /**
+     * Actualizar fechas de una reserva
+     */
+    @PutMapping("/{id}")
+    public ResponseEntity<?> actualizarReserva(@PathVariable Long id, @RequestBody Map<String, String> body) {
+        Optional<Reserva> reservaOpt = reservaService.buscarPorId(id);
+
+        if (reservaOpt.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Map.of("message", "Reserva no encontrada"));
+        }
+
+        Reserva reserva = reservaOpt.get();
+
+        try {
+            String fechaInicioStr = body.get("fechaInicio");
+            String fechaFinStr = body.get("fechaFin");
+
+            if (fechaInicioStr == null || fechaFinStr == null) {
+                return ResponseEntity.badRequest()
+                        .body(Map.of("message", "Las fechas son obligatorias"));
+            }
+
+            LocalDate fechaInicio = LocalDate.parse(fechaInicioStr);
+            LocalDate fechaFin = LocalDate.parse(fechaFinStr);
+
+            if (fechaFin.isBefore(fechaInicio) || fechaFin.isEqual(fechaInicio)) {
+                return ResponseEntity.badRequest()
+                        .body(Map.of("message", "La fecha de salida debe ser posterior a la de entrada"));
+            }
+
+            // Recalcular total
+            long noches = java.time.temporal.ChronoUnit.DAYS.between(fechaInicio, fechaFin);
+            double nuevoTotal = reserva.getDetalles().stream()
+                    .mapToDouble(d -> d.getPrecioNoche() * noches)
+                    .sum();
+
+            reserva.setFechaInicio(fechaInicio);
+            reserva.setFechaFin(fechaFin);
+            reserva.setTotal(nuevoTotal);
+
+            reservaService.guardar(reserva);
+
+            return ResponseEntity.ok(Map.of(
+                    "message", "Reserva actualizada exitosamente",
+                    "nuevoTotal", nuevoTotal
+            ));
+
+        } catch (Exception e) {
+            return ResponseEntity.badRequest()
+                    .body(Map.of("message", "Error al procesar las fechas: " + e.getMessage()));
+        }
+    }
 }

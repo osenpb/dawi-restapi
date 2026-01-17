@@ -2,7 +2,6 @@ package com.osen.sistema_reservas.helpers.exceptions;
 
 /**
  * Excepción lanzada cuando hay un conflicto de datos.
- * Ejemplo: Habitación ya reservada en esas fechas, email duplicado, etc.
  */
 public class ConflictException extends RuntimeException {
 

@@ -28,17 +28,13 @@ public record ReservaListResponse(
             DepartamentoSimple departamento
     ) {}
 
-    /**
-     * Departamento simplificado
-     */
+
     public record DepartamentoSimple(
             Long id,
             String nombre
     ) {}
 
-    /**
-     * Cliente simplificado
-     */
+
     public record ClienteSimple(
             Long id,
             String nombre,
@@ -48,9 +44,7 @@ public record ReservaListResponse(
             String documento
     ) {}
 
-    /**
-     * Detalle de reserva simplificado
-     */
+
     public record DetalleSimple(
             Long id,
             Long habitacionId,

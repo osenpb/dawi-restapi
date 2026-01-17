@@ -10,10 +10,7 @@ import java.util.List;
 
 public class ReservaMapper {
 
-    /**
-     * Convierte una Reserva a ReservaResponse completo
-     */
-    public static ReservaResponse toDTO(Reserva reserva) {
+static ReservaResponse toDTO(Reserva reserva) {
         List<DetalleReservaResponse> detalles = reserva.getDetalles().stream()
                 .map(det -> new DetalleReservaResponse(
                         det.getId(),
@@ -37,9 +34,7 @@ public class ReservaMapper {
         );
     }
 
-    /**
-     * Convierte una Reserva a ReservaListResponse simplificado (evita referencias circulares)
-     */
+
     public static ReservaListResponse toListResponse(Reserva reserva) {
         // Hotel simplificado
         ReservaListResponse.HotelSimple hotelSimple = null;
@@ -73,7 +68,7 @@ public class ReservaMapper {
             );
         }
 
-        // Detalles simplificados
+
         List<ReservaListResponse.DetalleSimple> detallesSimples = List.of();
         if (reserva.getDetalles() != null) {
             detallesSimples = reserva.getDetalles().stream()

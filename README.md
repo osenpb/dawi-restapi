@@ -7,7 +7,7 @@ Además cumple con principios SOLID.
 
 El repositorio frontend que consume este proyecto se encuentra en: https://github.com/osenpb/f_sistema_reserva
 
-## 🚀 Tecnologías principales
+## Tecnologías principales
 
 - Java 21
 - Spring Boot
@@ -19,7 +19,7 @@ El repositorio frontend que consume este proyecto se encuentra en: https://githu
 - Base de datos: MySQL
 - Docker
 
-## 🔐 Seguridad y Autenticación
+## Seguridad y Autenticación
 
 El módulo de autenticación sigue principios de Clean Architecture, separando claramente:
 
@@ -35,7 +35,7 @@ El módulo de autenticación sigue principios de Clean Architecture, separando c
 - Separación de responsabilidades entre capas
 - Manejo centralizado de errores de seguridad
 
-## 🧩 Arquitectura del proyecto
+## Arquitectura del proyecto
 
 Enfoque híbrido
 
@@ -58,13 +58,13 @@ Incluye:
 - DTOs de request y response
 - Conversión explícita entre entidades y DTOs
 
-### ⚠️ Manejo de Excepciones
+### Manejo de Excepciones
 
 - Excepciones personalizadas por dominio
 - @ControllerAdvice para manejo global
 - Respuestas de error claras y consistentes
 
-## 🧪 Enfoque del proyecto
+## Enfoque del proyecto
 
 Ayni está diseñado como:
 
@@ -79,7 +79,8 @@ Especial énfasis en:
 - Escalabilidad
 - Legibilidad del código
 
-## 📌 Próximas mejoras
+## Próximas mejoras
 
+- Seguridad CSRF.
 - Integración de OAuth2.
 - Documentación con OpenAPI / Swagger.

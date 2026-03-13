@@ -1,86 +1,100 @@
-# Ayni - Sistema de reservas
+# Ayni – Reservation System
 
-Ayni es una aplicación de reserva de hospedajes en distintos hoteles afiliados en territorio peruano. El backend fue desarrollado con Java 21 y Spring Boot, enfocado en buenas prácticas de arquitectura, seguridad y diseño.
+Ayni is a lodging reservation application for hotels affiliated across Peruvian territory. The backend was developed with **Java 21** and **Spring Boot**, focusing on good practices in architecture, security, and design.
 
-El proyecto implementa autenticación basada en JWT, manejo de DTOs, excepciones personalizadas, filtros de Spring Security y paginación, combinando Clean Architecture para el módulo de autenticación y una arquitectura feature‑based para el resto del dominio.
-Además cumple con principios SOLID.
+The project implements **JWT-based authentication**, DTO management, custom exceptions, Spring Security filters, and pagination. It combines **Clean Architecture** for the authentication module with a **feature-based architecture** for the rest of the domain.  
+It also follows **SOLID principles**.
 
-El repositorio frontend que consume este proyecto se encuentra en: https://github.com/osenpb/f_sistema_reserva
+The frontend repository that consumes this project can be found at:  
+https://github.com/osenpb/f_sistema_reserva
 
-## Tecnologías principales
+---
 
-- Java 21
-- Spring Boot
-- Spring Security + JWT + Nimbus JOSE
-- Spring Data JPA
-- Hibernate
-- REST API
-- Maven
-- Base de datos: MySQL
-- Docker
+## Main Technologies
 
-## Seguridad y Autenticación
+- Java 21  
+- Spring Boot  
+- Spring Security + JWT + Nimbus JOSE  
+- Spring Data JPA  
+- Hibernate  
+- REST API  
+- Maven  
+- Database: MySQL  
+- Docker  
 
-El módulo de autenticación sigue principios de Clean Architecture, separando claramente:
+---
 
-- Dominio: reglas de negocio y modelos centrales.
-- Aplicación: casos de uso (login, registro, validación).
-- Infraestructura: implementación de JWT, repositorios y seguridad.
-- Entrypoints: controladores REST.
+## Security and Authentication
 
-## Características
+The authentication module follows **Clean Architecture principles**, clearly separating:
 
-- Autenticación y autorización mediante JWT
-- Filtros personalizados de Spring Security
-- Separación de responsabilidades entre capas
-- Manejo centralizado de errores de seguridad
+- **Domain**: business rules and core models  
+- **Application**: use cases (login, registration, validation)  
+- **Infrastructure**: JWT implementation, repositories, and security configuration  
+- **Entrypoints**: REST controllers  
 
-## Arquitectura del proyecto
+---
 
-Enfoque híbrido
+## Features
 
-- Auth → Clean Architecture
-- Resto del dominio → Arquitectura feature‑based
+- Authentication and authorization using **JWT**
+- Custom **Spring Security filters**
+- Clear **separation of responsibilities** between layers
+- Centralized handling of **security-related errors**
 
-Esto permite:
+---
 
-- Máxima claridad en un módulo crítico como autenticación
-- Escalabilidad y organización por contexto funcional en el resto del sistema
+## Project Architecture
 
-El proyecto utiliza DTOs para:
+**Hybrid approach**
 
-- Evitar exponer entidades directamente
-- Controlar el contrato de la API
-- Facilitar validaciones y evolución del modelo
+- **Auth module → Clean Architecture**
+- **Rest of the domain → Feature-based architecture**
 
-Incluye:
+This approach provides:
 
-- DTOs de request y response
-- Conversión explícita entre entidades y DTOs
+- Maximum clarity in a critical module such as authentication  
+- Scalability and organization by **functional context** across the rest of the system  
 
-### Manejo de Excepciones
+The project uses **DTOs** to:
 
-- Excepciones personalizadas por dominio
-- @ControllerAdvice para manejo global
-- Respuestas de error claras y consistentes
+- Avoid exposing entities directly  
+- Control the API contract  
+- Facilitate validation and model evolution  
 
-## Enfoque del proyecto
+Includes:
 
-Ayni está diseñado como:
+- **Request and response DTOs**
+- Explicit conversion between **entities and DTOs**
 
-- Proyecto demostrativo de web de reserva de hoteles.
-- Base sólida para un e‑commerce real.
-- Buenas prácticas en Spring Boot moderno.
+---
 
-Especial énfasis en:
+### Exception Handling
 
-- Arquitectura limpia
-- Seguridad
-- Escalabilidad
-- Legibilidad del código
+- Custom **domain exceptions**
+- **@ControllerAdvice** for global exception handling
+- Clear and consistent **error responses**
 
-## Próximas mejoras
+---
 
-- Seguridad CSRF.
-- Integración de OAuth2.
-- Documentación con OpenAPI / Swagger.
+## Project Approach
+
+Ayni is designed as:
+
+- A **demonstration project** for a hotel reservation web application  
+- A **solid foundation for a real e-commerce system**  
+- An example of **modern Spring Boot best practices**
+
+Special emphasis on:
+
+- Clean architecture  
+- Security  
+- Scalability  
+- Code readability  
+
+---
+
+## Upcoming Improvements
+
+- **OAuth2 integration**
+- **OpenAPI / Swagger documentation**
